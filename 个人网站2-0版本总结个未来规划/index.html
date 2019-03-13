@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/hexo-blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/hexo-blog/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hexo-blog/',
+    scheme: 'Muse',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="从2016年3月自学前端到现在已经有两年的时间了，自己也喜欢瞎捣鼓一些东西，个人也尝试做自己个人的网站买了相关的配置，个人网站版本迭代到第二个版本，写下这个文档主要是为了记录这两年个人网站的开发历程和未来网站的开发规划">
+<meta name="keywords" content="总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="个人网站2.0版本总结个未来规划">
+<meta property="og:url" content="http://www.daiwei.org/hexo-blog/个人网站2-0版本总结个未来规划/index.html">
+<meta property="og:site_name" content="戴伟的个人博客">
+<meta property="og:description" content="从2016年3月自学前端到现在已经有两年的时间了，自己也喜欢瞎捣鼓一些东西，个人也尝试做自己个人的网站买了相关的配置，个人网站版本迭代到第二个版本，写下这个文档主要是为了记录这两年个人网站的开发历程和未来网站的开发规划">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.daiwei.org/hexo-blog/个人网站2-0版本总结个未来规划/html1.0.jpg">
+<meta property="og:image" content="http://www.daiwei.org/hexo-blog/个人网站2-0版本总结个未来规划/html2.0.jpg">
+<meta property="og:updated_time" content="2019-03-05T17:21:29.370Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="个人网站2.0版本总结个未来规划">
+<meta name="twitter:description" content="从2016年3月自学前端到现在已经有两年的时间了，自己也喜欢瞎捣鼓一些东西，个人也尝试做自己个人的网站买了相关的配置，个人网站版本迭代到第二个版本，写下这个文档主要是为了记录这两年个人网站的开发历程和未来网站的开发规划">
+<meta name="twitter:image" content="http://www.daiwei.org/hexo-blog/个人网站2-0版本总结个未来规划/html1.0.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.daiwei.org/hexo-blog/个人网站2-0版本总结个未来规划/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>个人网站2.0版本总结个未来规划 | 戴伟的个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-blur"></div>
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hexo-blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">戴伟的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">未曾遗忘的青春</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tag"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-目录">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>目录</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.daiwei.org/hexo-blog/hexo-blog/个人网站2-0版本总结个未来规划/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="戴伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hexo-blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="戴伟的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+        
+        
+          <h1 class="post-title" itemprop="name headline">个人网站2.0版本总结个未来规划
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-03-06 11:39:26" itemprop="dateCreated datePublished" datetime="2018-03-06T11:39:26+08:00">2018-03-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-06 01:21:29" itemprop="dateModified" datetime="2019-03-06T01:21:29+08:00">2019-03-06</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>从2016年3月自学前端到现在已经有两年的时间了，自己也喜欢瞎捣鼓一些东西，个人也尝试做自己个人的网站买了相关的配置，个人网站版本迭代到第二个版本，写下这个文档主要是为了记录这两年个人网站的开发历程和未来网站的开发规划<br><a id="more"></a></p>
+<h2 id="个人网站2-0版本总结个未来规划"><a href="#个人网站2-0版本总结个未来规划" class="headerlink" title="个人网站2.0版本总结个未来规划"></a>个人网站2.0版本总结个未来规划</h2><h3 id="建站初衷："><a href="#建站初衷：" class="headerlink" title="建站初衷："></a>建站初衷：</h3><ul>
+<li>看到别人的作品在网上能够被人看到，觉的网站开发的魅力深深的吸引了我，想自己也做一个</li>
+<li>希望能了解建站的一体化流畅操作从而了解网页开发</li>
+<li>工作之余学习方式</li>
+<li>希望有自己的作品</li>
+</ul>
+<h3 id="建站准备"><a href="#建站准备" class="headerlink" title="建站准备"></a>建站准备</h3><h4 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h4><p>当时购买了一个域名，购买域名很便宜第一年通常也就50以内，购买域名之后还需要备案，需要有指定背景（当时是阿里寄过来的一个背景图纸），于是就站在背景前面拍了张照片并上传上去，执行后续的备案流程操作。提交成功之后大概等了十多天才审核通过，当时等的急的哦！</p>
+<h4 id="虚拟主机"><a href="#虚拟主机" class="headerlink" title="虚拟主机"></a>虚拟主机</h4><p>当时买的是共享虚拟主机，有流量限制的，之后环境搭建好了之后发现用的太快了之后升级了一个独享虚拟主机不限制流量的那种，就开始我的个人网站建设的准备了</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>阿里云个人后台配置的，网站查阅资料，经过一段时间琢磨真的搭建起来了 那个感觉真的是爽啊！</p>
+<h3 id="初版："><a href="#初版：" class="headerlink" title="初版："></a>初版：</h3><p><img src="/hexo-blog/个人网站2-0版本总结个未来规划/html1.0.jpg" alt="v1.0"></p>
+<h4 id="建设功能："><a href="#建设功能：" class="headerlink" title="建设功能："></a>建设功能：</h4><p>首页展示，个人页信息，博客，作品信息，个人中心（后台管理），音乐播放</p>
+<h4 id="技术框架与库"><a href="#技术框架与库" class="headerlink" title="技术框架与库:"></a>技术框架与库:</h4><p>javascript，html5，css3，jquery，ajax，bootstrap，部分页面使用基于AMD规范的模块化开发</p>
+<h4 id="进度："><a href="#进度：" class="headerlink" title="进度："></a>进度：</h4><p>2016-6 至 2016-8</p>
+<h4 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h4><ol>
+<li>首页由于添加很多图片，以及音频资源请求导致页面加载很慢很慢，当时很了解html5音频的相关操作，代码还是比较不符合规范和逻辑的，之后有优化音频播放器，但是并没有再更新旧版本首页的播放器</li>
+<li>大多数都是静态页面，很多东西修改都不是通过后台操作改动，静态页面改动很频繁也很麻烦</li>
+<li>页面设计不合理，元素嵌套过多，代码混乱</li>
+<li>经过1年的技术学习和沉淀，加上刚开始学习vue框架，就开始想给之前的网站改版并使用vue2.0完成个人网站的开发</li>
+</ol>
+<h3 id="2-0版："><a href="#2-0版：" class="headerlink" title="2.0版："></a>2.0版：</h3><p><img src="/hexo-blog/个人网站2-0版本总结个未来规划/html2.0.jpg" alt="v1.0"></p>
+<h4 id="建设功能：-1"><a href="#建设功能：-1" class="headerlink" title="建设功能："></a>建设功能：</h4><p>首页bing壁纸和个人壁纸，个人状态信息，音乐，资源搜索，等等各种功能</p>
+<h4 id="技术框架与库："><a href="#技术框架与库：" class="headerlink" title="技术框架与库："></a>技术框架与库：</h4><p>javascript，html5，css3，vue2.0，vuex，axios，bootstrap栅格系统css代码等，使用es6语言开发</p>
+<h4 id="进度：-1"><a href="#进度：-1" class="headerlink" title="进度："></a>进度：</h4><p>2017-5 至 至今<br>相对于v.10优化的地方</p>
+<ol>
+<li>单页面spa应用，用户体验好，按需加载首页加载速度提升了10倍以上</li>
+<li>代码书写相对之前有所提升，网站风格提升</li>
+<li>扩展的功能多资源搜索，每日笑话，新闻头条，以及版本信息等等</li>
+<li>使用当前热门的vue技术，开发更方便，组件化开发深入人心，虚拟dom的渲染机制使得页面性能更加优越<br>问题：</li>
+<li>部分地方使用了jqeury的animate实现歌词滚动的效果，作为一个基于vue的项目 使用jquery显得有点格格不入(已解决)</li>
+<li>项目越来越大的时候不方便管理，应该是开始代码的结构没有构思好，不方便维护</li>
+<li>单页面不利于SEO，虽说有相关插件可以将静态页面单独分隔，但是用户体验必定大打折扣</li>
+</ol>
+<h3 id="未来规划"><a href="#未来规划" class="headerlink" title="未来规划"></a>未来规划</h3><ol>
+<li>未来的网站可能还会基于vue，或者重写，但是务必解决的是seo的问题</li>
+<li>加入用户交互。初步的想法是：部分功能需要用户交互，听歌，建议，个人标签点赞等等都需要登录后才能操作(已实现))</li>
+<li>后台管理页面的搭建，方便个人后台管理操作(计划使用react + ant)</li>
+<li>拓展新功能，优化或重构之前的代码</li>
+<li>开发自己通用的组件库并发布npm包，方便使用（d-utils）</li>
+</ol>
+<p>直到现在我还是在更新自己的网站，我喜欢这个行业，也会一直继续下去，努力成为一名合格的前端开发工程师!</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hexo-blog/tags/总结/" rel="tag"># 总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hexo-blog/一句话调试你的CSS层/" rel="next" title="一句话调试你的CSS层">
+                <i class="fa fa-chevron-left"></i> 一句话调试你的CSS层
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hexo-blog/webpack4-0-安装-extract-text-webpack-plugin-报错/" rel="prev" title="webpack4.0 安装 extract-text-webpack-plugin 报错">
+                webpack4.0 安装 extract-text-webpack-plugin 报错 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">戴伟</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/hexo-blog/archives">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/hexo-blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/hexo-blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#个人网站2-0版本总结个未来规划"><span class="nav-number">1.</span> <span class="nav-text">个人网站2.0版本总结个未来规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建站初衷："><span class="nav-number">1.1.</span> <span class="nav-text">建站初衷：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建站准备"><span class="nav-number">1.2.</span> <span class="nav-text">建站准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#域名"><span class="nav-number">1.2.1.</span> <span class="nav-text">域名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟主机"><span class="nav-number">1.2.2.</span> <span class="nav-text">虚拟主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初版："><span class="nav-number">1.3.</span> <span class="nav-text">初版：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#建设功能："><span class="nav-number">1.3.1.</span> <span class="nav-text">建设功能：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#技术框架与库"><span class="nav-number">1.3.2.</span> <span class="nav-text">技术框架与库:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进度："><span class="nav-number">1.3.3.</span> <span class="nav-text">进度：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题："><span class="nav-number">1.3.4.</span> <span class="nav-text">问题：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-0版："><span class="nav-number">1.4.</span> <span class="nav-text">2.0版：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#建设功能：-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">建设功能：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#技术框架与库："><span class="nav-number">1.4.2.</span> <span class="nav-text">技术框架与库：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进度：-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">进度：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#未来规划"><span class="nav-number">1.5.</span> <span class="nav-text">未来规划</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">戴伟</span>
+
+  
+
+  
+</div>
+
+
+  <span class="post-meta-divider">Hexo - Next</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+        <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div class="music" id="d-audio">
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hexo-blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hexo-blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hexo-blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hexo-blog/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/hexo-blog/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/hexo-blog/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/hexo-blog/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hexo-blog/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/hexo-blog/js/src/axios.js?v=6.6.0"></script>
+<script type="text/javascript" src="/hexo-blog/js/src/music.js?v=6.6.0"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

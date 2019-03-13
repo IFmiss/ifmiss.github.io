@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/hexo-blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/hexo-blog/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hexo-blog/',
+    scheme: 'Muse',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="vue是当下最流行的前端框架，简单，易上手，使用场景丰富的特点，从刚学习vue到现在也有一年多了，期间从vue播放器，到个人网站，再到公司的一些vue项目，感觉对于vue的学习和了解也就是一些基本的操作。为了更深入了解vue的实现机制，开始学习和了解vue的源码。这也是基于 [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)的学习">
+<meta name="keywords" content="vue,源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习">
+<meta property="og:url" content="http://www.daiwei.org/hexo-blog/Vue源码学习/index.html">
+<meta property="og:site_name" content="戴伟的个人博客">
+<meta property="og:description" content="vue是当下最流行的前端框架，简单，易上手，使用场景丰富的特点，从刚学习vue到现在也有一年多了，期间从vue播放器，到个人网站，再到公司的一些vue项目，感觉对于vue的学习和了解也就是一些基本的操作。为了更深入了解vue的实现机制，开始学习和了解vue的源码。这也是基于 [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)的学习">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.daiwei.org/hexo-blog/Vue源码学习/mvvm.png">
+<meta property="og:updated_time" content="2019-01-24T15:39:00.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码学习">
+<meta name="twitter:description" content="vue是当下最流行的前端框架，简单，易上手，使用场景丰富的特点，从刚学习vue到现在也有一年多了，期间从vue播放器，到个人网站，再到公司的一些vue项目，感觉对于vue的学习和了解也就是一些基本的操作。为了更深入了解vue的实现机制，开始学习和了解vue的源码。这也是基于 [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)的学习">
+<meta name="twitter:image" content="http://www.daiwei.org/hexo-blog/Vue源码学习/mvvm.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.daiwei.org/hexo-blog/Vue源码学习/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Vue源码学习 | 戴伟的个人博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-blur"></div>
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hexo-blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">戴伟的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">未曾遗忘的青春</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tag"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-目录">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/hexo-blog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>目录</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.daiwei.org/hexo-blog/hexo-blog/Vue源码学习/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="戴伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hexo-blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="戴伟的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue源码学习
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-12-10 15:38:43" itemprop="dateCreated datePublished" datetime="2018-12-10T15:38:43+08:00">2018-12-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-01-24 23:39:00" itemprop="dateModified" datetime="2019-01-24T23:39:00+08:00">2019-01-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/hexo-blog/categories/vue/" itemprop="url" rel="index"><span itemprop="name">vue</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>vue是当下最流行的前端框架，简单，易上手，使用场景丰富的特点，从刚学习vue到现在也有一年多了，期间从vue播放器，到个人网站，再到公司的一些vue项目，感觉对于vue的学习和了解也就是一些基本的操作。为了更深入了解vue的实现机制，开始学习和了解vue的源码。这也是基于 <code>[Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)</code>的学习<br><a id="more"></a></p>
+<h3 id="关于vue"><a href="#关于vue" class="headerlink" title="关于vue"></a>关于vue</h3><p>vue: 一款MVVM框架<br>核心思想： 数据驱动<br>特点：低耦合，易上手，环境搭建方便</p>
+<p>以下是边看 Vue.js 技术揭秘 边总结的一点对于vue认识，只是为了加深对于vue的认识和了解</p>
+<h3 id="New-Vue"><a href="#New-Vue" class="headerlink" title="New Vue"></a>New Vue</h3><ol>
+<li>执行 init 方法 （如果没有new 实例化，会报错）</li>
+<li>合并配置</li>
+<li>初始化生命周期</li>
+<li>初始化events</li>
+<li>初始化渲染</li>
+<li>初始化data, props, computed, watcher等<br>在初始化的最后，检测到如果有 el 属性，则调用 vm.$mount 方法挂载 vm，挂载的目标就是把模板渲染成最终的 DOM</li>
+</ol>
+<h3 id="Vue的-mount挂载"><a href="#Vue的-mount挂载" class="headerlink" title="Vue的$mount挂载"></a>Vue的$mount挂载</h3><ol>
+<li>判断挂载的元素是否是<code>body</code>, <code>html</code><br>vue 不允许挂载到body，html上 （提供的元素只能作为挂载点。不同于 Vue 1.x，所有的挂载元素会被 Vue 生成的 DOM 替换。因此不推荐挂载root实例到 <html> 或者 <body> 上。这是官方的解释）</body></html></li>
+<li><p>缓存了原型上的 $mount 方法，最后再重新定义该方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mount = Vue.prototype.$mount</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成render的方法<br>代码来自: <a href="https://blog.csdn.net/hxy19971101/article/details/79948074" target="_blank" rel="noopener">Vue实例属性之el,template,render</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'.app'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    info: <span class="string">'这是通过el属性获取挂载元素的outerHTML方式渲染。'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">'&lt;div&gt;这是template属性模板渲染。&lt;/div&gt;'</span>,</span><br><span class="line">  render: <span class="function"><span class="keyword">function</span>(<span class="params">h</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> h(<span class="string">'div'</span>, &#123;&#125;, <span class="string">'这是render属性方式渲染。'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果存在render函数，会优先渲染<code>render</code>方法里的内容 </li>
+<li>如果没有render函数，会先渲染<code>template</code>中的内容，且通过 <code>compileToFunctions</code> 来生成render方法</li>
+<li>如果上面两个都没有，则通过 template = <code>getOuterHTML(el)</code> 来设置模版，且通过 <code>compileToFunctions</code> 来生成render方法</li>
+</ul>
+</li>
+</ol>
+<p>最后都会调用原先原型上的 $mount 方法挂载。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> mount.call(<span class="keyword">this</span>, el, hydrating)</span><br></pre></td></tr></table></figure></p>
+<p>$mount 方法是定于在Vue.prototype上的方法<br>$mount 方法实际上会去调用 <code>mountComponent</code><br>而 <code>mountComponent</code> 的核心作用就是</p>
+<ul>
+<li>先调用 vm._render 方法先生成虚拟 vNode</li>
+<li><p>再例化一个渲染Watcher</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Watcher(vm, updateComponent, noop, &#123;</span><br><span class="line">  before () &#123;</span><br><span class="line">    <span class="keyword">if</span> (vm._isMounted) &#123;</span><br><span class="line">      callHook(vm, <span class="string">'beforeUpdate'</span>)    <span class="comment">// 如果已经是Mounted的状态， 则执行 beforeUpdate 的钩子函数</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">true</span> <span class="comment">/* isRenderWatcher */</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在它的回调函数中会调用 updateComponent 方法，最终调用 vm._update 更新 DOM。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (vm.$vnode == <span class="literal">null</span>) &#123;</span><br><span class="line">  vm._isMounted = <span class="literal">true</span></span><br><span class="line">  callHook(vm, <span class="string">'mounted'</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> vm</span><br></pre></td></tr></table></figure>
+<p>函数最后判断为根节点的时候设置 vm._isMounted 为 true， 表示这个实例已经挂载了，同时执行 mounted 钩子函数。 这里注意 vm.$vnode 表示 Vue 实例的父虚拟 Node，所以它为 Null 则表示当前是根 Vue 的实例。</p>
+</li>
+</ul>
+<h3 id="render"><a href="#render" class="headerlink" title="_render"></a>_render</h3><p>Vue 的 _render 方法是实例的一个私有方法，它用来把实例渲染成一个虚拟 Node<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vnode = render.call(vm._renderProxy, vm.$createElement)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Virtual-DOM"><a href="#Virtual-DOM" class="headerlink" title="Virtual DOM"></a>Virtual DOM</h3><p>虚拟dom其实是一个VNode对象，是用JS对象记录一个dom节点的副本，当dom发生更改时候，先用虚拟dom进行diff，算出最小差异，然后再修改真实dom，通过递归的方式进行同级vnode的diff，最终实现整个DOM树的更新<br>Vue.js 中 Virtual DOM 是借鉴了一个开源库 <a href="https://github.com/snabbdom/snabbdom" target="_blank" rel="noopener">snabbdom</a> 的实现，然后加入了一些 Vue.js 特色的东西</p>
+<h3 id="双向绑定原理"><a href="#双向绑定原理" class="headerlink" title="双向绑定原理"></a>双向绑定原理</h3><p>通过Object.defineProperty()来劫持vue中各个属性的setter、getter<br>代码来源: <a href="https://blog.csdn.net/connie_0217/article/details/79271508" target="_blank" rel="noopener">vue面试常见问题小结</a><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">"newKey"</span>, &#123;</span><br><span class="line">  get:<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;<span class="keyword">return</span>  ...&#125; | <span class="literal">undefined</span>,<span class="comment">//读取属性返回的值，即类似上面的value</span></span><br><span class="line">  set:<span class="function"><span class="keyword">function</span> (<span class="params">value</span>)</span>&#123; <span class="keyword">return</span> ...&#125; | <span class="literal">undefined</span><span class="comment">//设置属性的值</span></span><br><span class="line">  configurable: <span class="literal">true</span> | <span class="literal">false</span></span><br><span class="line">  enumerable: <span class="literal">true</span> | <span class="literal">false</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>结合发布订阅者模式<br>通过监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者<br>通过订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图<br>通过解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器<br><img src="/hexo-blog/Vue源码学习/mvvm.png" alt=""></p>
+<p>– 未完待续 –</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hexo-blog/tags/vue/" rel="tag"># vue</a>
+          
+            <a href="/hexo-blog/tags/源码/" rel="tag"># 源码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hexo-blog/个人通用js方法库d-js-utils/" rel="next" title="个人通用js方法库d-js-utils">
+                <i class="fa fa-chevron-left"></i> 个人通用js方法库d-js-utils
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/hexo-blog/日志监控/" rel="prev" title="日志监控">
+                日志监控 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">戴伟</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/hexo-blog/archives">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/hexo-blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/hexo-blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于vue"><span class="nav-number">1.</span> <span class="nav-text">关于vue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#New-Vue"><span class="nav-number">2.</span> <span class="nav-text">New Vue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue的-mount挂载"><span class="nav-number">3.</span> <span class="nav-text">Vue的$mount挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#render"><span class="nav-number">4.</span> <span class="nav-text">_render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Virtual-DOM"><span class="nav-number">5.</span> <span class="nav-text">Virtual DOM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双向绑定原理"><span class="nav-number">6.</span> <span class="nav-text">双向绑定原理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">戴伟</span>
+
+  
+
+  
+</div>
+
+
+  <span class="post-meta-divider">Hexo - Next</span>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+        <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div class="music" id="d-audio">
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/hexo-blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hexo-blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/hexo-blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/hexo-blog/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/hexo-blog/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/hexo-blog/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/hexo-blog/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hexo-blog/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/hexo-blog/js/src/axios.js?v=6.6.0"></script>
+<script type="text/javascript" src="/hexo-blog/js/src/music.js?v=6.6.0"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
